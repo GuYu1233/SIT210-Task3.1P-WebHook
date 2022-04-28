@@ -1,16 +1,37 @@
-int led = D7;  // The on-board LED
+#include <Adafruit_DHT.h>
+
+DHT dht(A0, DHT11);
+
+int led = D7;
+
+int photodiode = A0;// The on-board LED
 
 void setup() {
+
   pinMode(led, OUTPUT);
+
+  dht.begin();
+
 }
 
+
+
 void loop() {
+
   digitalWrite(led, HIGH);   // Turn ON the LED
 
-  String temp = String(random(60, 80));
-  Particle.publish("temp", temp, PRIVATE);
+
+
+  float temp = dht.getTempCelcius();
+
+  Particle.publish("temp", String(temp), PRIVATE);
+
   delay(30000);               // Wait for 30 seconds
 
+
+
   digitalWrite(led, LOW);    // Turn OFF the LED
+
   delay(30000);               // Wait for 30 seconds
+
 }
